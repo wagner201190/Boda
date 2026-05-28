@@ -334,7 +334,7 @@
 <body>
 
   <audio id="bgMusic" loop>
-    <source src="canon_1.mp3" type="audio/mpeg">
+    <source src="canon_.mp3" type="audio/mpeg" crossorigin="anonymous">
     Tu navegador no soporta el elemento de audio.
   </audio>
 
@@ -408,7 +408,7 @@
             target="_blank">
             Ver ubicación en Waze
           </a>
-          <br>
+            <br>
           <a
             class="maps-btn"
             style="padding: 12px 25px; font-size: 0.9rem; margin: 5px 0; display: block;"
@@ -416,6 +416,7 @@
             target="_blank">
             Ver ubicación Google Maps
           </a>
+        
         </div>
 
       </div>
@@ -475,11 +476,11 @@
         </p>
         
         <div style="text-align: center; margin-bottom: 25px;">
-          <a href="regalos.html" style="color: var(--gold); font-weight: 600; text-decoration: underline; font-size: 1.1rem; display: inline-block; margin-bottom: 15px; transition: 0.3s;">
+          <a href="cuentas.html" style="color: var(--gold); font-weight: 600; text-decoration: underline; font-size: 1.1rem; display: inline-block; margin-bottom: 15px; transition: 0.3s;">
             Más información aquí
           </a>
           <br>
-          <a href="regalos.html" style="display: inline-block;">
+          <a href="cuentas.html" style="display: inline-block;">
             <img src="qr1.png" alt="Código QR para transferencia" style="width: 150px; height: auto; max-height: 150px; border-radius: 10px; border: 2px solid var(--gold); box-shadow: 0 5px 15px rgba(0,0,0,0.1); padding: 5px; background: white;">
           </a>
         </div>
@@ -525,37 +526,45 @@
   </footer>
 
   <script>
-    // Se asegura de que la música inicie cuando el invitado toque cualquier parte de la pantalla
-    document.body.addEventListener('click', function startMusic() {
-      const music = document.getElementById('bgMusic');
-      
-      // Ajustamos el volumen al 30% para que sea suave y de fondo
-      music.volume = 0.03; 
-      
-      // Intenta reproducir la música
-      if (music.paused) {
-        music.play().catch(error => {
-          console.log("El navegador aún bloquea el sonido. Necesita más interacción.");
-        });
+    let isMusicInitialized = false;
+
+    function initAudio() {
+      if (isMusicInitialized) return;
+
+      const audio = document.getElementById('bgMusic');
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+      if (AudioContext) {
+        try {
+          const audioCtx = new AudioContext();
+          const source = audioCtx.createMediaElementSource(audio);
+          const gainNode = audioCtx.createGain();
+
+          // AQUÍ FORZAMOS LA GANANCIA A UN 5% REAL
+          gainNode.gain.value = 0.05;
+
+          source.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+
+          audio.play().then(() => {
+            isMusicInitialized = true;
+          }).catch(err => console.log("Aún bloqueado por el celular."));
+        } catch (e) {
+          // Fallback por si la API falla
+          audio.volume = 0.05;
+          audio.play();
+          isMusicInitialized = true;
+        }
+      } else {
+        // Fallback para navegadores muy viejos
+        audio.volume = 0.05;
+        audio.play();
+        isMusicInitialized = true;
       }
-      
-      // Remueve el evento para que no intente ejecutarse cada vez que hagan clic
-      document.body.removeEventListener('click', startMusic);
-    }, { once: true });
-    
-    // Lo mismo para cuando deslizan la pantalla en el celular (Touch)
-    document.body.addEventListener('touchstart', function startMusicTouch() {
-      const music = document.getElementById('bgMusic');
-      
-      // Ajustamos el volumen al 30%
-      music.volume = 0.3;
-      
-      if (music.paused) {
-        music.play().catch(e => {});
-      }
-      
-      document.body.removeEventListener('touchstart', startMusicTouch);
-    }, { once: true });
+    }
+
+    document.body.addEventListener('click', initAudio, { once: true });
+    document.body.addEventListener('touchstart', initAudio, { once: true });
   </script>
 
 </body>
