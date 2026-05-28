@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Información de Regalos | Yennifer & Wagner</title>
+  <title>Cuentas Bancarias | Yennifer & Wagner</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
@@ -34,7 +34,6 @@
       box-shadow: 0 10px 30px rgba(0,0,0,.08);
       max-width: 600px;
       width: 100%;
-      text-align: center;
       border-top: 4px solid #c9a86a;
       animation: fadeIn 1.5s ease;
     }
@@ -43,37 +42,33 @@
       font-family:'Cormorant Garamond', serif;
       font-size: 3rem;
       color: #17324d;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+      text-align: center;
     }
 
-    p {
+    .info-group {
+      margin-bottom: 20px;
       line-height: 1.8;
       color: #4b5563;
-      margin-bottom: 25px;
+      font-size: 1.1rem;
     }
 
-    .qr-container {
-      margin: 30px 0;
-    }
-
-    .qr-container img {
-      width: 200px;
-      height: 200px;
-      border-radius: 10px;
-      border: 2px solid #c9a86a;
-      padding: 10px;
-    }
-
-    .bank-details {
-      background: #f8f6f1;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 30px;
-      text-align: left;
-    }
-
-    .bank-details strong {
+    .info-group strong {
       color: #17324d;
+      display: inline-block;
+      min-width: 220px;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 25px 0;
+      border: none;
+    }
+
+    .btn-container {
+      text-align: center;
+      margin-top: 40px;
     }
 
     .btn-back {
@@ -98,34 +93,76 @@
       from{ opacity:0; transform:translateY(20px); }
       to{ opacity:1; transform:translateY(0); }
     }
+    
+    @media(max-width:600px){
+      .info-group strong {
+        display: block;
+        min-width: auto;
+        margin-bottom: 5px;
+      }
+    }
   </style>
 </head>
 <body>
 
+  <audio id="bgMusic" loop>
+    <source src="canon_.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento de audio.
+  </audio>
+
   <div class="container">
-    <h2>Detalles para Regalos</h2>
+    <h2>Cuentas Bancarias</h2>
     
-    <p>
-      El mejor regalo es su presencia en este día tan especial. 
-      Si desean tener un detalle adicional con nosotros, pueden hacerlo a través de los siguientes medios:
-    </p>
-
-    <div class="qr-container">
-      <img src="qr.jpg" alt="Código QR para transferencia" onerror="this.style.display='none'">
+    <div class="info-group">
+      <strong>Banco:</strong> BAC Credomatic Colones
+    </div>
+    
+    <div class="info-group">
+      <strong>Cuenta IBAN:</strong> CR35010200009524269551
+    </div>
+    
+    <div class="info-group">
+      <strong>Titular de la Cuenta:</strong> Yennifer Rivera
     </div>
 
-    <div class="bank-details">
-      <p style="margin-bottom: 10px;"><strong>Banco:</strong> BAC Credomatic Colones</p>
-      <p style="margin-bottom: 10px;"><strong>Cuenta IBAN:</strong> CR35010200009524269551</p>
-      <p style="margin-bottom: 10px;"><strong>Titular de la Cuenta:</strong> Yennifer Rivera</p>
-      <br>
-      <br>
-      <p style="margin-bottom: 0;"><strong>SINPE Móvil:</strong> 62104398</p>
-   <p style="margin-bottom: 10px;"><strong>Titular de la Cuenta:</strong> Yennifer Rivera</p>
+    <hr class="divider">
+
+    <div class="info-group">
+      <strong>SINPE Móvil:</strong> 62104398
     </div>
 
-    <a href="index.html" class="btn-back">Volver a la invitación</a>
+    <div class="info-group">
+      <strong>Titular de la Cuenta:</strong> Yennifer Rivera
+    </div>
+
+    <div class="btn-container">
+      <a href="index.html" class="btn-back">Volver a la invitación</a>
+    </div>
   </div>
+
+  <script>
+    document.body.addEventListener('click', function startMusic() {
+      const music = document.getElementById('bgMusic');
+      music.volume = 0.3; // Volumen bajo de fondo
+      
+      if (music.paused) {
+        music.play().catch(error => {
+          console.log("Audio bloqueado temporalmente por el navegador.");
+        });
+      }
+      document.body.removeEventListener('click', startMusic);
+    }, { once: true });
+    
+    document.body.addEventListener('touchstart', function startMusicTouch() {
+      const music = document.getElementById('bgMusic');
+      music.volume = 0.3;
+      
+      if (music.paused) {
+        music.play().catch(e => {});
+      }
+      document.body.removeEventListener('touchstart', startMusicTouch);
+    }, { once: true });
+  </script>
 
 </body>
 </html>
