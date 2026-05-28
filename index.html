@@ -275,14 +275,13 @@
       box-shadow:0 10px 20px rgba(37,211,102,.25);
     }
 
-    /* ESTILOS DE LOS BOTONES DE MAPAS */
     .waze-btn{
-      background:#82B2D1; /* Celeste baby blue elegante */
+      background:#82B2D1; 
       box-shadow:0 10px 20px rgba(130,178,209,.25);
     }
 
     .maps-btn{
-      background:#6B8E6A; /* Verde suave elegante */
+      background:#6B8E6A; 
       box-shadow:0 10px 20px rgba(107,142,106,.25);
     }
 
@@ -333,6 +332,11 @@
 </head>
 
 <body>
+
+  <audio id="bgMusic" loop>
+    <source src="canon_.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento de audio.
+  </audio>
 
   <header>
 
@@ -404,13 +408,12 @@
             target="_blank">
             Ver ubicación en Waze
           </a>
-          <br>
           <a
             class="maps-btn"
             style="padding: 12px 25px; font-size: 0.9rem; margin: 5px 0; display: block;"
             href="https://maps.app.goo.gl/BZrqn6dVZbVn7ksq7"
             target="_blank">
-            Ver ubicación en Google Maps
+            Ver ubicación Google Maps
           </a>
         </div>
 
@@ -519,6 +522,34 @@
     </p>
 
   </footer>
+
+  <script>
+    // Se asegura de que la música inicie cuando el invitado toque cualquier parte de la pantalla
+    document.body.addEventListener('click', function startMusic() {
+      const music = document.getElementById('bgMusic');
+      
+      // Intenta reproducir la música
+      if (music.paused) {
+        music.play().catch(error => {
+          console.log("El navegador aún bloquea el sonido. Necesita más interacción.");
+        });
+      }
+      
+      // Remueve el evento para que no intente ejecutarse cada vez que hagan clic
+      document.body.removeEventListener('click', startMusic);
+    }, { once: true });
+    
+    // Lo mismo para cuando deslizan la pantalla en el celular (Touch)
+    document.body.addEventListener('touchstart', function startMusicTouch() {
+      const music = document.getElementById('bgMusic');
+      
+      if (music.paused) {
+        music.play().catch(e => {});
+      }
+      
+      document.body.removeEventListener('touchstart', startMusicTouch);
+    }, { once: true });
+  </script>
 
 </body>
 </html>
